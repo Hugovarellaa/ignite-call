@@ -1,7 +1,18 @@
-import { Avatar, Box, Divider, Drawer, List, useTheme } from '@mui/material'
+import {
+  Avatar,
+  Box,
+  Divider,
+  Drawer,
+  List,
+  useTheme,
+  Icon,
+  ListItemButton,
+} from '@mui/material'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { ReactNode } from 'react'
-import { useDrawerContext } from '../../context'
+import { useDrawerContext, useThemeContext } from '../../context'
 import { ListItemLink } from './components/ListItemLink'
 
 interface MenuLeftProps {
@@ -10,6 +21,7 @@ interface MenuLeftProps {
 
 export function MenuLeft({ children }: MenuLeftProps) {
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext()
+  const { toggleTheme, themeName } = useThemeContext()
   const theme = useTheme()
 
   const smDown = useMediaQuery(theme.breakpoints.down('sm'))
@@ -54,6 +66,18 @@ export function MenuLeft({ children }: MenuLeftProps) {
                   onClick={smDown ? toggleDrawerOpen : undefined}
                 />
               ))}
+            </List>
+          </Box>
+          <Box>
+            <List component="nav">
+              <ListItemButton onClick={toggleTheme}>
+                <ListItemIcon>
+                  <Icon>dark_mode</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  primary={themeName === 'light' ? 'Dark mode' : 'Light mode'}
+                />
+              </ListItemButton>
             </List>
           </Box>
         </Box>

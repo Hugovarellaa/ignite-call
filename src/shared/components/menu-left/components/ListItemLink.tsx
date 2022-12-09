@@ -10,7 +10,6 @@ interface IListItemLinkProps {
 
 export function ListItemLink({ icon, label, to, onClick }: IListItemLinkProps) {
   const navigate = useNavigate()
-
   const resolvePath = useResolvedPath(to)
 
   const matchActiveRoutes = useMatch({

@@ -1,54 +1,11 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  Drawer,
-  Icon,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-} from '@mui/material'
+import { Avatar, Box, Divider, Drawer, List, useTheme } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { ReactNode } from 'react'
-import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom'
 import { useDrawerContext } from '../../context'
+import { ListItemLink } from './components/ListItemLink'
 
 interface MenuLeftProps {
   children: ReactNode
-}
-
-interface IListItemLinkProps {
-  to: string
-  icon: string
-  label: string
-  onClick?: () => void
-}
-
-export function ListItemLink({ icon, label, to, onClick }: IListItemLinkProps) {
-  const navigate = useNavigate()
-
-  const resolvePath = useResolvedPath(to)
-
-  const matchActiveRoutes = useMatch({
-    path: resolvePath.pathname,
-    end: false,
-  })
-
-  function handleClick() {
-    navigate(to)
-    onClick?.() // undefined ? no execute : execute
-  }
-
-  return (
-    <ListItemButton onClick={handleClick} selected={!!matchActiveRoutes}>
-      <ListItemIcon>
-        <Icon>{icon}</Icon>
-      </ListItemIcon>
-      <ListItemText primary={label} />
-    </ListItemButton>
-  )
 }
 
 export function MenuLeft({ children }: MenuLeftProps) {

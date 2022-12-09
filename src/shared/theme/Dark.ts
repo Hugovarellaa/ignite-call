@@ -13,7 +13,7 @@ export const DarkTheme = createTheme({
       main: cyan[500],
       dark: cyan[400],
       light: cyan[300],
-      contrastText: 'ffffff',
+      contrastText: '#ffffff',
     },
     background: {
       paper: '#303134',

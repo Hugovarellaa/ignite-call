@@ -1,15 +1,15 @@
 import { api } from '../services/api/api'
 
-interface ICustomer {
+interface ICustomers {
   id: number
-  first_name: string
-  last_name: string
+  firstName: string
+  lastName: string
   email: string
-  password: string
+  password: number
 }
 
 interface ICustomerList {
-  data: ICustomer[]
+  data: ICustomers[]
   totalCount: number
 }
 
@@ -19,14 +19,9 @@ const getAll = async (
 ): Promise<ICustomerList | Error> => {
   try {
     const limit = 10
-    const url = `/customers_${page}}1&_limit=${limit}&first_name=${filter}`
+    const url = `/customers?_page=${page}&_limit=${5}&firstName_like=${filter}`
 
-    const response = await api.get(url)
-
-    const data = response.data
-    const { headers } = response.data
-
-    console.log(response)
+    const { data, headers } = await api.get(url)
 
     if (data) {
       return {
@@ -43,7 +38,7 @@ const getAll = async (
   }
 }
 
-const getById = async (id: number): Promise<ICustomer | Error> => {
+const getById = async (id: number): Promise<ICustomers | Error> => {
   try {
     const { data } = await api.get(`/customers/${id}`)
     if (data) {
@@ -59,10 +54,10 @@ const getById = async (id: number): Promise<ICustomer | Error> => {
 }
 
 const create = async (
-  customer: Omit<ICustomer, 'id'>,
+  customer: Omit<ICustomers, 'id'>,
 ): Promise<number | Error> => {
   try {
-    const { data } = await api.post<ICustomer>(`/customers`, customer)
+    const { data } = await api.post<ICustomers>(`/customers`, customer)
 
     if (data) {
       return data.id
@@ -79,7 +74,7 @@ const create = async (
 
 const updateById = async (
   id: number,
-  customer: ICustomer,
+  customer: ICustomers,
 ): Promise<void | Error> => {
   try {
     await api.put(`/customers/${id}`, customer)
@@ -100,4 +95,12 @@ const deleteById = async (id: number): Promise<void | Error> => {
         `Error ao Apagar o registro:  ${error}`,
     )
   }
+}
+
+export const customerServices = {
+  getAll,
+  getById,
+  create,
+  updateById,
+  deleteById,
 }

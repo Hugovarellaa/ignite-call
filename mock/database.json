@@ -2,24 +2,45 @@
   "customers": [
     {
       "id": 1,
-      "first_name": "John",
-      "last_name": "Doe",
-      "email": "john.doe@mail.com",
-      "password": "123"
+      "firstName": "Carlos ",
+      "lastName": "Silva",
+      "email": "carlos@gmail.com",
+      "password": 123
     },
     {
       "id": 2,
-      "first_name": "Example",
-      "last_name": "Example",
-      "email": "Example@mail.com",
-      "password": "123456"
+      "firstName": "Alfredo ",
+      "lastName": "Pereira",
+      "email": "alfredo@gmail.com",
+      "password": 123
     },
     {
       "id": 3,
-      "first_name": "Hugo",
-      "last_name": "Alves Varella",
-      "email": "hugovarellaa@mail.com",
-      "password": "123456789"
+      "firstName": "Juca ",
+      "lastName": "Silva",
+      "email": "Juca@gmail.com",
+      "password": 123
+    },
+    {
+      "id": 4,
+      "firstName": "Maria ",
+      "lastName": "Silva",
+      "email": "maria@gmail.com",
+      "password": 333
+    },
+    {
+      "id": 5,
+      "firstName": "Carlos",
+      "lastName": "Silva",
+      "email": "carlos@gmail.com",
+      "password": 1123
+    },
+    {
+      "id": 6,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "johndoe@gmail.com",
+      "password": 5
     }
   ]
 }

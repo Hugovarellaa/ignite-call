@@ -10,23 +10,23 @@ export const AppRoutes = () => {
   useEffect(() => {
     setDrawerOptions([
       {
-        path: '/',
+        path: '/home',
         label: 'Home',
         icon: 'home',
       },
       {
         path: '/customer',
         label: 'Customer',
-        icon: 'manage_accounts',
+        icon: 'people',
       },
     ])
   }, [setDrawerOptions])
 
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/home" element={<Dashboard />} />
       <Route path="/customer" element={<Customers />} />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   )
 }

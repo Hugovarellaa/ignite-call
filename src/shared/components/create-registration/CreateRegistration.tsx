@@ -1,7 +1,37 @@
 import { Box, useTheme, Paper, Button, Icon } from '@mui/material'
 import Divider from '@mui/material/Divider/Divider'
 
-export function CreateRegistration() {
+interface ICreateRegistrationProps {
+  ButtonText?: string
+
+  isAddButton?: boolean
+  isBackButton?: boolean
+  isSaveButton?: boolean
+  isDeleteButton?: boolean
+  isSaveAndCloseButton?: boolean
+
+  onAdd?: () => void
+  onBack?: () => void
+  onSave?: () => void
+  onDelete?: () => void
+  onSaveAndBack?: () => void
+}
+
+export function CreateRegistration({
+  ButtonText = 'Novo',
+
+  isAddButton = true,
+  isBackButton = true,
+  isSaveButton = true,
+  isDeleteButton = true,
+  isSaveAndCloseButton = false,
+
+  onAdd,
+  onBack,
+  onSave,
+  onDelete,
+  onSaveAndBack,
+}: ICreateRegistrationProps) {
   const theme = useTheme()
   return (
     <Box
@@ -13,51 +43,62 @@ export function CreateRegistration() {
       alignItems="center"
       height={theme.spacing(5)}
       component={Paper}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {}}
-        disableElevation
-        startIcon={<Icon>save</Icon>}>
-        Salvar
-      </Button>
+      {isSaveButton && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onSave}
+          disableElevation
+          startIcon={<Icon>save</Icon>}>
+          Salvar
+        </Button>
+      )}
 
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {}}
-        disableElevation
-        startIcon={<Icon>save</Icon>}>
-        Salvar e voltar
-      </Button>
+      {isSaveAndCloseButton && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onSaveAndBack}
+          disableElevation
+          startIcon={<Icon>save</Icon>}>
+          Salvar e voltar
+        </Button>
+      )}
 
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {}}
-        disableElevation
-        startIcon={<Icon>delete</Icon>}>
-        Apagar
-      </Button>
+      {isDeleteButton && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onDelete}
+          disableElevation
+          startIcon={<Icon>delete</Icon>}>
+          Apagar
+        </Button>
+      )}
 
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {}}
-        disableElevation
-        startIcon={<Icon>add</Icon>}>
-        Novo
-      </Button>
+      {isAddButton && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onAdd}
+          disableElevation
+          startIcon={<Icon>add</Icon>}>
+          {ButtonText}
+        </Button>
+      )}
+
       <Divider variant="middle" orientation="vertical" />
 
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {}}
-        disableElevation
-        startIcon={<Icon>arrow_back</Icon>}>
-        Voltar
-      </Button>
+      {isBackButton && (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onBack}
+          disableElevation
+          startIcon={<Icon>arrow_back</Icon>}>
+          Voltar
+        </Button>
+      )}
     </Box>
   )
 }

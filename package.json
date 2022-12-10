@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
+    "axios": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "6",
@@ -16,6 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
+    "api": "json-server -w -p 3333 ./mock/database.json",
     "lint:run": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },

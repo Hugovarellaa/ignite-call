@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import Divider from '@mui/material/Divider/Divider'
+import { ButtonComponent } from '../Button/Button'
 
 interface ICreateRegistrationProps {
   ButtonText?: string
@@ -81,6 +82,7 @@ export function CreateRegistration({
             Salvar
           </Typography>
         </Button>
+        // <ButtonComponent title="Salvar" icon="add" isActive loading />
       )}
       {isLoadingSaveButton && <Skeleton width={110} height={61} />}
 

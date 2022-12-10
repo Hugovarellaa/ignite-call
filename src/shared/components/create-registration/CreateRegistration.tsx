@@ -1,4 +1,13 @@
-import { Box, useTheme, Paper, Button, Icon } from '@mui/material'
+import {
+  Box,
+  useTheme,
+  Paper,
+  Button,
+  Icon,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import Divider from '@mui/material/Divider/Divider'
 
 interface ICreateRegistrationProps {
@@ -9,6 +18,12 @@ interface ICreateRegistrationProps {
   isSaveButton?: boolean
   isDeleteButton?: boolean
   isSaveAndCloseButton?: boolean
+
+  isLoadingAddButton?: boolean
+  isLoadingBackButton?: boolean
+  isLoadingSaveButton?: boolean
+  isLoadingDeleteButton?: boolean
+  isLoadingSaveAndCloseButton?: boolean
 
   onAdd?: () => void
   onBack?: () => void
@@ -26,6 +41,12 @@ export function CreateRegistration({
   isDeleteButton = true,
   isSaveAndCloseButton = false,
 
+  isLoadingAddButton = false,
+  isLoadingBackButton = false,
+  isLoadingSaveButton = false,
+  isLoadingDeleteButton = false,
+  isLoadingSaveAndCloseButton = false,
+
   onAdd,
   onBack,
   onSave,
@@ -33,6 +54,8 @@ export function CreateRegistration({
   onSaveAndBack,
 }: ICreateRegistrationProps) {
   const theme = useTheme()
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+  const mdDown = useMediaQuery(theme.breakpoints.down('md'))
   return (
     <Box
       gap={1}
@@ -43,62 +66,108 @@ export function CreateRegistration({
       alignItems="center"
       height={theme.spacing(5)}
       component={Paper}>
-      {isSaveButton && (
+      {isSaveButton && !isLoadingSaveButton && (
         <Button
           variant="contained"
           color="primary"
           onClick={onSave}
           disableElevation
           startIcon={<Icon>save</Icon>}>
-          Salvar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden">
+            Salvar
+          </Typography>
         </Button>
       )}
+      {isLoadingSaveButton && <Skeleton width={110} height={61} />}
 
-      {isSaveAndCloseButton && (
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={onSaveAndBack}
-          disableElevation
-          startIcon={<Icon>save</Icon>}>
-          Salvar e voltar
-        </Button>
+      {isSaveAndCloseButton &&
+        !isLoadingSaveAndCloseButton &&
+        !smDown &&
+        !mdDown && (
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={onSaveAndBack}
+            disableElevation
+            startIcon={<Icon>save</Icon>}>
+            <Typography
+              variant="button"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              overflow="hidden">
+              Salvar e voltar
+            </Typography>
+          </Button>
+        )}
+      {isLoadingSaveAndCloseButton && !smDown && !mdDown && (
+        <Skeleton width={180} height={61} />
       )}
 
-      {isDeleteButton && (
+      {isDeleteButton && !isLoadingDeleteButton && (
         <Button
           variant="outlined"
           color="primary"
           onClick={onDelete}
           disableElevation
           startIcon={<Icon>delete</Icon>}>
-          Apagar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden">
+            Apagar
+          </Typography>
         </Button>
       )}
+      {isLoadingDeleteButton && <Skeleton width={110} height={61} />}
 
-      {isAddButton && (
+      {isAddButton && !isLoadingAddButton && !smDown && (
         <Button
           variant="outlined"
           color="primary"
           onClick={onAdd}
           disableElevation
           startIcon={<Icon>add</Icon>}>
-          {ButtonText}
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden">
+            {ButtonText}
+          </Typography>
         </Button>
       )}
+      {isLoadingAddButton && !smDown && <Skeleton width={110} height={61} />}
 
-      <Divider variant="middle" orientation="vertical" />
+      {isBackButton &&
+        (isAddButton ||
+          isSaveButton ||
+          isDeleteButton ||
+          isSaveAndCloseButton) && (
+          <Divider variant="middle" orientation="vertical" />
+        )}
 
-      {isBackButton && (
+      {isBackButton && !isLoadingBackButton && (
         <Button
           variant="outlined"
           color="primary"
           onClick={onBack}
           disableElevation
           startIcon={<Icon>arrow_back</Icon>}>
-          Voltar
+          <Typography
+            variant="button"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            overflow="hidden">
+            Voltar
+          </Typography>
         </Button>
       )}
+      {isLoadingBackButton && <Skeleton width={110} height={61} />}
     </Box>
   )
 }

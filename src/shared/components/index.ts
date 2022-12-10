@@ -1,2 +1,3 @@
 export * from './menu-left/MenuLeft'
-export * from './tooldbar/Toolbar'
+export * from './toolbar/Toolbar'
+export * from './create-registration/CreateRegistration'

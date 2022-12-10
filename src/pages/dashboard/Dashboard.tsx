@@ -1,11 +1,9 @@
-import { Toolbar } from '../../shared/components'
+import { CreateRegistration } from '../../shared/components'
 import { BasePageLayout } from '../../shared/layouts/BasePageLayout'
 
 export function Dashboard() {
   return (
-    <BasePageLayout
-      title="Pagina inicial"
-      toolbar={<Toolbar searchInput buttonSearchText="Cadastrar" />}>
+    <BasePageLayout title="Pagina inicial" toolbar={<CreateRegistration />}>
       testando 2
     </BasePageLayout>
   )

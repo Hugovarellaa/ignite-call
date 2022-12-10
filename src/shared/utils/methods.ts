@@ -43,7 +43,61 @@ const getAll = async (
   }
 }
 
-const getById = async (): Promise<any> => {}
-const create = async (): Promise<any> => {}
-const updateById = async (): Promise<any> => {}
-const deleteById = async (): Promise<any> => {}
+const getById = async (id: number): Promise<ICustomer | Error> => {
+  try {
+    const { data } = await api.get(`/customers/${id}`)
+    if (data) {
+      return data
+    }
+    return new Error(`Error ao consulta o registro`)
+  } catch (error) {
+    return new Error(
+      (error as { message: string }).message ||
+        `Error ao consulta o registro:  ${error}`,
+    )
+  }
+}
+
+const create = async (
+  customer: Omit<ICustomer, 'id'>,
+): Promise<number | Error> => {
+  try {
+    const { data } = await api.post<ICustomer>(`/customers`, customer)
+
+    if (data) {
+      return data.id
+    }
+
+    return new Error(`Error ao Criar o registros`)
+  } catch (error) {
+    return new Error(
+      (error as { message: string }).message ||
+        `Error ao Cria os registros:  ${error}`,
+    )
+  }
+}
+
+const updateById = async (
+  id: number,
+  customer: ICustomer,
+): Promise<void | Error> => {
+  try {
+    await api.put(`/customers/${id}`, customer)
+  } catch (error) {
+    return new Error(
+      (error as { message: string }).message ||
+        `Error ao Atualizar o registro:  ${error}`,
+    )
+  }
+}
+
+const deleteById = async (id: number): Promise<void | Error> => {
+  try {
+    await api.delete(`/customers/${id}`)
+  } catch (error) {
+    return new Error(
+      (error as { message: string }).message ||
+        `Error ao Apagar o registro:  ${error}`,
+    )
+  }
+}

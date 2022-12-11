@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Toolbar } from '../../shared/components'
 import { useDebounce } from '../../shared/hooks'
 import { BasePageLayout } from '../../shared/layouts/BasePageLayout'
@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow'
 import TableFooter from '@mui/material/TableFooter'
 import Paper from '@mui/material/Paper'
 import LinearProgress from '@mui/material/LinearProgress'
-import { Pagination } from '@mui/material'
+import { Icon, IconButton, Pagination } from '@mui/material'
 
 export function Customers() {
   const [rows, setRows] = useState<ICustomers[]>([])
@@ -22,6 +22,7 @@ export function Customers() {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { debounce } = useDebounce()
+  const navigate = useNavigate()
 
   const totalLinePagination = 10
   const totalPagination = Math.ceil(totalCount / totalLinePagination)
@@ -50,6 +51,21 @@ export function Customers() {
       })
     })
   }, [debounce, pagination, search])
+
+  function handleDelete(id: number) {
+    if (confirm('Realmente desejar apagar?')) {
+      customerServices.deleteById(id).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message)
+        } else {
+          alert('Registro apagado com sucesso!')
+          setRows((oldRows) => {
+            return [...oldRows.filter((oldRow) => oldRow.id !== id)]
+          })
+        }
+      })
+    }
+  }
 
   return (
     <>
@@ -84,7 +100,16 @@ export function Customers() {
               {rows.map((row) => (
                 <TableRow key={row.id} sx={{ margin: 1 }}>
                   <TableCell component="th" scope="row">
-                    Ações
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}>
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => navigate(`/customer/${row.id}}`)}>
+                      <Icon>edite</Icon>
+                    </IconButton>
                   </TableCell>
                   <TableCell>{row.firstName}</TableCell>
                   <TableCell>{row.lastName}</TableCell>

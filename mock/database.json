@@ -1,34 +1,6 @@
 {
   "customers": [
     {
-      "id": 1,
-      "firstName": "Carlos ",
-      "lastName": "Silva",
-      "email": "carlos@gmail.com",
-      "password": 123
-    },
-    {
-      "id": 2,
-      "firstName": "Alfredo ",
-      "lastName": "Pereira",
-      "email": "alfredo@gmail.com",
-      "password": 123
-    },
-    {
-      "id": 3,
-      "firstName": "Juca ",
-      "lastName": "Silva",
-      "email": "Juca@gmail.com",
-      "password": 123
-    },
-    {
-      "id": 4,
-      "firstName": "Maria ",
-      "lastName": "Silva",
-      "email": "maria@gmail.com",
-      "password": 333
-    },
-    {
       "id": 5,
       "firstName": "Carlos",
       "lastName": "Silva",
@@ -72,13 +44,6 @@
     },
     {
       "id": 11,
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "johndoe@gmail.com",
-      "password": 5
-    },
-    {
-      "id": 12,
       "firstName": "John",
       "lastName": "Doe",
       "email": "johndoe@gmail.com",

@@ -25,7 +25,10 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/home" element={<Dashboard />} />
+
       <Route path="/customer" element={<Customers />} />
+      <Route path="/customer/:id" element={<p>Detalhe</p>} />
+
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   )

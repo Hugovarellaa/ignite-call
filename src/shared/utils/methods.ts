@@ -1,6 +1,6 @@
 import { api } from '../services/api/api'
 
-interface ICustomers {
+export interface ICustomers {
   id: number
   firstName: string
   lastName: string
@@ -8,7 +8,7 @@ interface ICustomers {
   password: number
 }
 
-interface ICustomerList {
+export type ICustomerList = {
   data: ICustomers[]
   totalCount: number
 }
@@ -19,14 +19,14 @@ const getAll = async (
 ): Promise<ICustomerList | Error> => {
   try {
     const limit = 10
-    const url = `/customers?_page=${page}&_limit=${5}&firstName_like=${filter}`
+    const url = `/customers?_page=${page}&_limit=${limit}&firstName_like=${filter}`
 
     const { data, headers } = await api.get(url)
 
     if (data) {
       return {
         data,
-        totalCount: Number(headers['x-total-count'] || 10),
+        totalCount: Number(headers['x-total-count'] || limit),
       }
     }
     return new Error(`Error ao lista os registros`)

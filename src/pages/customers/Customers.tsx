@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow'
 import TableFooter from '@mui/material/TableFooter'
 import Paper from '@mui/material/Paper'
 import LinearProgress from '@mui/material/LinearProgress'
+import { Pagination } from '@mui/material'
 
 export function Customers() {
   const [rows, setRows] = useState<ICustomers[]>([])
@@ -22,14 +23,21 @@ export function Customers() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { debounce } = useDebounce()
 
+  const totalLinePagination = 10
+  const totalPagination = Math.ceil(totalCount / totalLinePagination)
+
   const search = useMemo(() => {
     return searchParams.get('search') || ''
+  }, [searchParams])
+
+  const pagination = useMemo(() => {
+    return Number(searchParams.get('pagination') || '0')
   }, [searchParams])
 
   useEffect(() => {
     setIsLoading(true)
     debounce(() => {
-      customerServices.getAll(1, search).then((result) => {
+      customerServices.getAll(pagination, search).then((result) => {
         setIsLoading(false)
 
         if (result instanceof Error) {
@@ -41,7 +49,7 @@ export function Customers() {
         }
       })
     })
-  }, [debounce, search])
+  }, [debounce, pagination, search])
 
   return (
     <>
@@ -52,7 +60,10 @@ export function Customers() {
             searchInput
             searchText={search}
             changeSearchText={(text) =>
-              setSearchParams({ search: text }, { replace: true })
+              setSearchParams(
+                { search: text, pagination: '1' },
+                { replace: true },
+              )
             }
           />
         }>
@@ -81,11 +92,37 @@ export function Customers() {
                 </TableRow>
               ))}
             </TableBody>
+            {totalCount === 0 && !isLoading && (
+              <TableRow>
+                <TableCell colSpan={4}>Listagem vazia</TableCell>
+              </TableRow>
+            )}
+
             <TableFooter>
               {isLoading && (
-                <TableCell colSpan={4}>
-                  <LinearProgress variant="indeterminate" />
-                </TableCell>
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <LinearProgress variant="indeterminate" />
+                  </TableCell>
+                </TableRow>
+              )}
+
+              {totalCount > 0 && !isLoading && (
+                <TableRow>
+                  <TableCell colSpan={4}>
+                    <Pagination
+                      count={totalPagination}
+                      color="primary"
+                      page={pagination}
+                      onChange={(_, newPage) =>
+                        setSearchParams(
+                          { search, pagination: newPage.toString() },
+                          { replace: true },
+                        )
+                      }
+                    />
+                  </TableCell>
+                </TableRow>
               )}
             </TableFooter>
           </Table>

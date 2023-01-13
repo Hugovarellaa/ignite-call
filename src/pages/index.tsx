@@ -1,7 +1,9 @@
+import { Heading } from "@ignite-ui/react";
+
 export default function Home() {
   return (
     <div>
-      <h1>ola mundo</h1>
+      <Heading as="h1">ola mundo</Heading>
     </div>
   );
 }

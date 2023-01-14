@@ -1,9 +1,22 @@
 import { Adapter } from 'next-auth/adapters'
+import { prisma } from '../prisma'
 
 export function PrismaAdapter(): Adapter {
   return {
     async createUser(user) {},
-    async getUser(id) {},
+
+    async getUser(id) {
+      const user = await prisma.user.findUniqueOrThrow({ where: { id } })
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email!,
+        username: user.username,
+        avatar_url: user.avatar_url!,
+        emailVerified: null,
+      }
+    },
+
     async getUserByEmail(email) {},
     async getUserByAccount({ providerAccountId, provider }) {},
     async updateUser(user) {},

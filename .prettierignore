@@ -5,3 +5,7 @@ build
 scripts/workshop-setup.js
 
 *.yml
+
+
+# @types
+*.d.ts

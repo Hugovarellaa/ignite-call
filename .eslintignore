@@ -1,6 +1,9 @@
 # Third party
 **/node_modules
 
+@types
+*.d.ts
+
 # Not written by hand
 packages/react-art/npm/lib
 

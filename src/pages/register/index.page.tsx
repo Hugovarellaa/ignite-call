@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import {
@@ -26,15 +28,23 @@ const registerFormSchema = z.object({
 type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
-  const { register, handleSubmit, formState } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerFormSchema),
-  })
+  const { register, handleSubmit, formState, setValue } =
+    useForm<RegisterFormData>({
+      resolver: zodResolver(registerFormSchema),
+    })
 
+  const router = useRouter()
   const { errors, isSubmitting } = formState
 
   async function handleRegister(data: RegisterFormData) {
     console.log(data)
   }
+
+  useEffect(() => {
+    if (router.query.username) {
+      setValue('username', String(router.query.username))
+    }
+  }, [router.query.username, setValue])
 
   return (
     <RegisterContainer>
@@ -44,7 +54,7 @@ export default function Register() {
           Precisamos de algumas informações para criar seu perfil! Ah, você pode
           editar essas informações depois.
         </Text>
-        <MultiStep size={4} currentStep={1} />
+        <MultiStep size={4} currentStep={2} />
       </RegisterHeader>
 
       <RegisterForm as="form" onSubmit={handleSubmit(handleRegister)}>

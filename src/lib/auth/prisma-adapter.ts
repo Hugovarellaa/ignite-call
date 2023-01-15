@@ -28,6 +28,7 @@ export function PrismaAdapter(): Adapter {
         emailVerified: null,
       }
     },
+
     async getUserByAccount({ providerAccountId, provider }) {
       const { user } = await prisma.account.findUniqueOrThrow({
         where: {
@@ -50,7 +51,27 @@ export function PrismaAdapter(): Adapter {
       }
     },
 
-    async updateUser(user) {},
+    async updateUser(user) {
+      const prismaUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          name: user.name,
+          email: user.email!,
+          avatar_url: user.avatar_url,
+        },
+      })
+      return {
+        id: prismaUser.id,
+        name: prismaUser.name,
+        email: prismaUser.email!,
+        username: prismaUser.username,
+        avatar_url: prismaUser.avatar_url!,
+        emailVerified: null,
+      }
+    },
+
     async deleteUser(userId) {},
     async linkAccount(account) {},
     async unlinkAccount({ providerAccountId, provider }) {},

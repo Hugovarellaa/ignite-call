@@ -1,4 +1,5 @@
 import { getWeekDays } from '@/utils/get-week-days'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Button,
   Checkbox,
@@ -9,8 +10,10 @@ import {
 } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { RegisterContainer, RegisterHeader } from '../styles'
 import {
+  FormError,
   IntervalBox,
   IntervalContainer,
   IntervalDay,
@@ -18,50 +21,68 @@ import {
   IntervalItem,
 } from './styles'
 
-// const timerIntervalFormSchema = z.object({})
+const timerIntervalFormSchema = z.object({
+  intervals: z
+    .array(
+      z.object({
+        weekDay: z.number().min(0).max(6),
+        enabled: z.boolean(),
+        startTime: z.string(),
+        endTime: z.string(),
+      }),
+    )
+    .length(7)
+    .transform((intervals) => intervals.filter((interval) => interval.enabled))
+    .refine((intervals) => intervals.length > 0, {
+      message: 'Voce precisa selecionar pelo menos um dia da semana!',
+    }),
+})
+
+type TimeIntervalFormData = z.infer<typeof timerIntervalFormSchema>
 
 export default function Timerintervals() {
-  const { register, handleSubmit, control, watch } = useForm({
+  const { register, handleSubmit, control, watch, formState } = useForm({
+    resolver: zodResolver(timerIntervalFormSchema),
     defaultValues: {
       intervals: [
         {
-          weekDay: '0',
+          weekDay: 0,
           enabled: false,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '1',
+          weekDay: 1,
           enabled: true,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '2',
+          weekDay: 2,
           enabled: true,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '3',
+          weekDay: 3,
           enabled: true,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '4',
+          weekDay: 4,
           enabled: true,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '5',
+          weekDay: 5,
           enabled: true,
           startTime: '08:00',
           endTime: '18:00',
         },
         {
-          weekDay: '6',
+          weekDay: 6,
           enabled: false,
           startTime: '08:00',
           endTime: '18:00',
@@ -74,11 +95,13 @@ export default function Timerintervals() {
     name: 'intervals',
     control,
   })
-  // const { errors } = formState
+  const { errors, isSubmitting } = formState
   const interval = watch('intervals')
   const weekDays = getWeekDays()
 
-  async function handleSetTimeIntervals() {}
+  function handleSetTimeIntervals(data: TimeIntervalFormData) {
+    console.log(data)
+  }
 
   return (
     <RegisterContainer>
@@ -110,7 +133,7 @@ export default function Timerintervals() {
                     )
                   }}
                 />
-                <Text>{weekDays[Number(field.weekDay)]}</Text>
+                <Text>{weekDays[field.weekDay]}</Text>
               </IntervalDay>
               <IntervalInputs>
                 <TextInput
@@ -132,7 +155,11 @@ export default function Timerintervals() {
           ))}
         </IntervalContainer>
 
-        <Button type="submit">
+        {errors.intervals && (
+          <FormError size="sm">{errors.intervals.message}</FormError>
+        )}
+
+        <Button type="submit" disabled={isSubmitting}>
           Proximo passo
           <ArrowRight />
         </Button>

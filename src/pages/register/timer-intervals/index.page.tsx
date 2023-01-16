@@ -21,7 +21,7 @@ import {
 // const timerIntervalFormSchema = z.object({})
 
 export default function Timerintervals() {
-  const { handleSubmit, control } = useForm({
+  const { register, handleSubmit, control } = useForm({
     defaultValues: {
       intervals: [
         {
@@ -91,15 +91,25 @@ export default function Timerintervals() {
 
       <IntervalBox as="form" onSubmit={handleSubmit(handleSetTimeIntervals)}>
         <IntervalContainer>
-          {fields.map((field) => (
+          {fields.map((field, index) => (
             <IntervalItem key={field.id}>
               <IntervalDay>
                 <Checkbox />
-                <Text>{weekDays[field.weekDay]}</Text>
+                <Text>{weekDays[Number(field.weekDay)]}</Text>
               </IntervalDay>
               <IntervalInputs>
-                <TextInput size="sm" type="time" step={60} />
-                <TextInput size="sm" type="time" step={60} />
+                <TextInput
+                  size="sm"
+                  type="time"
+                  step={60}
+                  {...register(`intervals.${index}.startTime`)}
+                />
+                <TextInput
+                  size="sm"
+                  type="time"
+                  step={60}
+                  {...register(`intervals.${index}.endTime`)}
+                />
               </IntervalInputs>
             </IntervalItem>
           ))}

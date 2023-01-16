@@ -205,6 +205,7 @@ export function PrismaAdapter(
         expires: prismaSession.expires,
       }
     },
+
     async deleteSession(sessionToken) {
       await prisma.session.delete({
         where: {

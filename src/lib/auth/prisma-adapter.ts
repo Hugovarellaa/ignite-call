@@ -1,7 +1,11 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { Adapter } from 'next-auth/adapters'
 import { prisma } from '../prisma'
 
-export function PrismaAdapter(): Adapter {
+export function PrismaAdapter(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): Adapter {
   return {
     async createUser(user) {},
 
@@ -148,6 +152,13 @@ export function PrismaAdapter(): Adapter {
         userId: prismaSession.user_id,
         expires: prismaSession.expires,
       }
+    },
+    async deleteSession(sessionToken) {
+      await prisma.session.delete({
+        where: {
+          session_token: sessionToken,
+        },
+      })
     },
   }
 }

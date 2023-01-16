@@ -148,7 +148,7 @@ export function PrismaAdapter(
     },
 
     async getSessionAndUser(sessionToken) {
-      const { user, ...session } = await prisma.session.findFirstOrThrow({
+      const prismaSession = await prisma.session.findUnique({
         where: {
           session_token: sessionToken,
         },
@@ -156,6 +156,12 @@ export function PrismaAdapter(
           user: true,
         },
       })
+
+      if (!prismaSession) {
+        return null
+      }
+
+      const { user, ...session } = prismaSession
       return {
         session: {
           userId: session.user_id,

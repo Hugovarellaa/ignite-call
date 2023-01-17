@@ -12,6 +12,7 @@ import {
 import { ArrowRight } from 'phosphor-react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { api } from '../../../lib/axios'
 import { RegisterContainer, RegisterHeader } from '../styles'
 import {
   FormError,
@@ -124,8 +125,8 @@ export default function Timerintervals() {
   const interval = watch('intervals')
   const weekDays = getWeekDays()
 
-  function handleSetTimeIntervals(data: TimeIntervalFormOutput) {
-    console.log(data)
+  async function handleSetTimeIntervals(data: TimeIntervalFormOutput) {
+    await api.post('/users/timer-interval', data)
   }
 
   return (

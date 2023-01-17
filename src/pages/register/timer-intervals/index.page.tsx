@@ -1,3 +1,4 @@
+import { convertTimeStringToMinutes } from '@/utils/convert-time-string-to-minutes'
 import { getWeekDays } from '@/utils/get-week-days'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -35,71 +36,95 @@ const timerIntervalFormSchema = z.object({
     .transform((intervals) => intervals.filter((interval) => interval.enabled))
     .refine((intervals) => intervals.length > 0, {
       message: 'Voce precisa selecionar pelo menos um dia da semana!',
-    }),
+    })
+    .transform((intervals) => {
+      return intervals.map((interval) => {
+        return {
+          weekDay: interval.weekDay,
+          startTimeInMinutes: convertTimeStringToMinutes(interval.startTime),
+          endTimeInMinutes: convertTimeStringToMinutes(interval.endTime),
+        }
+      })
+    })
+    .refine(
+      (intervals) => {
+        return intervals.every(
+          (interval) =>
+            interval.endTimeInMinutes - 60 >= interval.startTimeInMinutes,
+        )
+      },
+      {
+        message:
+          'O horário do término deve ser pelo menos 1h distante do início',
+      },
+    ),
 })
 
-type TimeIntervalFormData = z.infer<typeof timerIntervalFormSchema>
+type TimeIntervalsFormInput = z.input<typeof timerIntervalFormSchema>
+type TimeIntervalFormOutput = z.output<typeof timerIntervalFormSchema>
 
 export default function Timerintervals() {
-  const { register, handleSubmit, control, watch, formState } = useForm({
-    resolver: zodResolver(timerIntervalFormSchema),
-    defaultValues: {
-      intervals: [
-        {
-          weekDay: 0,
-          enabled: false,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 1,
-          enabled: true,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 2,
-          enabled: true,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 3,
-          enabled: true,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 4,
-          enabled: true,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 5,
-          enabled: true,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-        {
-          weekDay: 6,
-          enabled: false,
-          startTime: '08:00',
-          endTime: '18:00',
-        },
-      ],
-    },
-  })
+  const { register, handleSubmit, control, watch, formState } =
+    useForm<TimeIntervalsFormInput>({
+      resolver: zodResolver(timerIntervalFormSchema),
+      defaultValues: {
+        intervals: [
+          {
+            weekDay: 0,
+            enabled: false,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 1,
+            enabled: true,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 2,
+            enabled: true,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 3,
+            enabled: true,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 4,
+            enabled: true,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 5,
+            enabled: true,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+          {
+            weekDay: 6,
+            enabled: false,
+            startTime: '08:00',
+            endTime: '18:00',
+          },
+        ],
+      },
+    })
 
   const { fields } = useFieldArray({
     name: 'intervals',
     control,
   })
+
   const { errors, isSubmitting } = formState
   const interval = watch('intervals')
   const weekDays = getWeekDays()
 
-  function handleSetTimeIntervals(data: TimeIntervalFormData) {
+  function handleSetTimeIntervals(data: TimeIntervalFormOutput) {
     console.log(data)
   }
 
